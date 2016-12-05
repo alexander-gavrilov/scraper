@@ -1,5 +1,6 @@
 package scraper;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,13 +18,17 @@ import java.security.cert.CertificateException;
  */
 public class Scraper {
     private Document document;
+    private Connection connection;
     Scraper(){
 
     }
-    Document getDocument(String url) throws KeyManagementException, NoSuchAlgorithmException, IOException {
+    Scraper(String url) throws KeyManagementException, NoSuchAlgorithmException, IOException {
         takeSSLValidationOff();
-        return Jsoup.connect(url).get();
+        connection = Jsoup.connect(url);
+        document = connection.get();
     }
+
+
 
     void takeSSLValidationOff() throws NoSuchAlgorithmException, KeyManagementException {
         TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
@@ -71,5 +76,13 @@ public class Scraper {
 
     public void setDocument(Document document) {
         this.document = document;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }
